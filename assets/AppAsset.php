@@ -7,6 +7,9 @@
 
 namespace app\assets;
 
+use kartik\color\ColorInputAsset;
+use kartik\date\DatePickerAsset;
+use kartik\time\TimePickerAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -26,6 +29,7 @@ class AppAsset extends AssetBundle
         'js/sdk/event.js',
         'js/sdk/invite.js',
         'js/main.js',
+        'js/register.js',
         'js/calendar.js',
         'js/popup.js',
         'js/router.js'
@@ -36,4 +40,12 @@ class AppAsset extends AssetBundle
         'app\assets\CalendarAsset',
         'app\assets\LoginAsset'
     ];
+
+    public function init()
+    {
+        parent::init();
+        $this->depends[] = ColorInputAsset::className();
+        $this->depends[] = DatePickerAsset::className();
+        $this->depends[] = TimePickerAsset::className();
+    }
 }

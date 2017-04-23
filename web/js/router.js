@@ -9,8 +9,8 @@
         contentSelector: '#content',
 
         login: function () {
-            $.ajax({
-                url: '/user/login',
+            return $.ajax({
+                url: '/site/login',
                 success: function (response) {
                     $(window.router.contentSelector).html(response.content);
                 }
@@ -21,11 +21,20 @@
             if (!window.SDK.user.isLogged()) {
                 return this.login();
             }
-            $.ajax({
+            return $.ajax({
                 url: '/site/calendar',
                 success: function (response) {
                     $(window.router.contentSelector).html(response);
-                    window.calendar.renderCalendar();
+                    window.calendar.initCalendar();
+                }
+            });
+        },
+
+        register: function () {
+            return $.ajax({
+                url: '/site/register',
+                success: function (response) {
+                    $(window.router.contentSelector).html(response.content);
                 }
             });
         }

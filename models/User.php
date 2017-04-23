@@ -29,6 +29,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     const STATUS_ACTIVE = 1;
     const STATUS_NOT_ACTIVE = 0;
+    const GROUP_ADMIN = 1;
+    const GROUP_USER = 2;
 
     /**
      * @inheritdoc
@@ -44,12 +46,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['group', 'default', 'value' => self::GROUP_USER],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
             [['username', 'password', 'access_token', 'auth_key'], 'required'],
             [['group', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'password', 'name', 'email', 'access_token'], 'string', 'max' => 255],
             [['username'], 'unique'],
-            [['access_token'], 'unique'],
+            [['access_token', 'auth_key'], 'unique'],
             [['email'], 'unique'],
         ];
     }
@@ -164,41 +168,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Return field list for REST API
-     * @return array
-     */
-    public function fields()
-    {
-        $fields = [
-            'id',
-            'name',
-            'email',
-            'group',
-            'created_at',
-            'updated_at',
-            'status',
-        ];
-        //return access data if user request him self
-        if (!Yii::$app->getUser()->getIsGuest() && $this->id == Yii::$app->getUser()->getIdentity()) {
-            $fields[] = 'username';
-            $fields[] = 'access_token';
-        }
-        return $fields;
-    }
-
-    /**
-     * @return array
-     */
-    public function extraFields()
-    {
-        return [
-            'events',
-            'invites',
-            'myinvite'
-        ];
-    }
-
-    /**
      * @param string $username
      * @return User|null
      */
@@ -214,5 +183,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword(string $password)
     {
         return Yii::$app->getSecurity()->validatePassword($password, $this->password);
+    }
+
+    public function isAdmin()
+    {
+        return $this->group == self::GROUP_ADMIN;
     }
 }

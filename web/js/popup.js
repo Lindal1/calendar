@@ -5,15 +5,49 @@
     'use strict';
 
     window.popup = {
-        showNewEventPopup: function (date) {
-            $.ajax({
-                url: '/site/new-event-form',
-                data: {date_start: date},
-                success: function (response) {
-                    $('#popup-content').html(response);
-                    $('#popup').dialog('open');
-                }
-            });
+        loadEventCreatePopup: function (date) {
+            window.SDK.api.get('/event/create', {date_start: date})
+                .then(function (response) {
+                    window.popup.setPopupContent(response.content);
+                    window.popup.open();
+                });
+        },
+
+        loadEventUpdatePopup: function (id) {
+            window.SDK.api.get('/event/update', {id: id})
+                .then(function (response) {
+                    window.popup.setPopupContent(response.content);
+                    window.popup.open();
+                });
+        },
+
+        loadEventViewPopup: function (id) {
+            window.SDK.api.get('/event/view', {id: id})
+                .then(function (response) {
+                    window.popup.setPopupContent(response.content);
+                    window.popup.open();
+                });
+        },
+
+        getPopup: function () {
+            return $('#popup');
+        },
+
+        setPopupContent: function (content) {
+            this.getPopup().html(content)
+        },
+
+        close: function () {
+            this.getPopup().dialog('close');
+        },
+
+        open: function () {
+            this.getPopup().dialog('open');
         }
     };
+
+    $(document).on('click', '.js-close-popup', function (){
+        window.popup.close();
+    });
+
 })(jQuery);

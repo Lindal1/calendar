@@ -21,20 +21,16 @@
         },
 
         request: function (type, url, params) {
-            return new Promise(function (resolve, reject) {
-                return $.ajax({
-                    url: url,
-                    data: params,
-                    type: type,
-                    dataType: 'json',
-                    headers: {Authorization: 'Bearer ' + window.SDK.api.getToken()},
-                    success: function (response) {
-                        resolve(response);
-                    },
-                    error: function (error) {
-                        reject(error);
-                    }
-                });
+            return $.ajax({
+                url: url,
+                data: params,
+                type: type,
+                dataType: 'json',
+                headers: {Authorization: 'Bearer ' + window.SDK.api.getToken()},
+                error: function (error) {
+                    alert(error.responseJSON.message);
+                    return error;
+                }
             });
         },
 

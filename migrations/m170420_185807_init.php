@@ -24,8 +24,10 @@ class m170420_185807_init extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'name' => $this->string()->notNull(),
-            'date_start' => $this->dateTime()->notNull(),
-            'date_end' => $this->dateTime(),
+            'date_start' => $this->date()->notNull(),
+            'time_start' => $this->time()->null()->defaultValue(null),
+            'date_end' => $this->date(),
+            'time_end' => $this->time()->null()->defaultValue(null),
             'description' => $this->text(),
             'color' => $this->string(),
             'status' => $this->integer()->notNull()

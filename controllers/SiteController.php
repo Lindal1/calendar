@@ -3,10 +3,12 @@
 namespace app\controllers;
 
 use app\models\forms\EventForm;
+use app\models\forms\RegisterForm;
 use Yii;
 use yii\web\Controller;
 use app\models\forms\LoginForm;
 use app\models\ContactForm;
+use yii\web\Response;
 
 class SiteController extends Controller
 {
@@ -43,39 +45,35 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
+            return Yii::$app->getUser()->getIdentity();
         }
-
         return [
             'content' => $this->renderAjax('login', [
-                'model' => $model,
+                'model' => $model
             ])
         ];
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
-    public function actionLogout()
+    public function actionRegister()
     {
-        Yii::$app->user->logout();
-        return $this->goHome();
+        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
+        $model = new RegisterForm();
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->register()) {
+            return Yii::$app->getUser()->getIdentity();
+        }
+        return [
+            'content' => $this->renderAjax('register', [
+                'model' => $model
+            ])
+        ];
     }
 
     public function actionCalendar()
     {
         return $this->renderAjax('calendar');
-    }
-
-    public function actionNewEventForm($date_start)
-    {
-        return $this->renderAjax('eventForm', [
-            'model' => new EventForm(['date_start' => $date_start])
-        ]);
     }
 
 }

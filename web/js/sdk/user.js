@@ -27,7 +27,7 @@
         },
 
         register: function (username, password, inviteCode) {
-            return window.SDK.api.post('/user/login', {username: username, password: password, inviteCode: inviteCode})
+            return window.SDK.api.post('/site/login', {username: username, password: password, inviteCode: inviteCode})
                 .then(function (response) {
                     window.SDK.user.data = response;
                     window.SDK.user.saveInStorage(response);
@@ -54,6 +54,16 @@
                 this.data = this.getFromStorage();
             }
             return this.data;
+        },
+
+        isAdmin: function () {
+            var data = this.getFromStorage();
+            return data['group'] == 1;
+        },
+
+        getId: function () {
+            var data = this.getFromStorage();
+            return data['id'];
         }
     };
 
