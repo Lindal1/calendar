@@ -5,13 +5,17 @@
     'use strict';
 
     $(document).on('submit', '#login-form', function () {
-        var username = $('#loginform-username').val();
-        var password = $('#loginform-password').val();
-        window.SDK.user.login(username, password)
-            .then(function () {
-                window.router.calendar();
-            }, function (error) {
-                alert(error);
+        window.SDK.api.post('/user/login', $(this).serialize())
+            .then(function (response) {
+                if (response.content) {
+                    $('#content').html(response.content);
+                }
+                else {
+                    window.SDK.user.data = response;
+                    window.SDK.user.saveInStorage(response);
+                    window.SDK.api.token = response['access_token'];
+                    window.router.calendar();
+                }
             });
         return false;
     });

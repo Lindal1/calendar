@@ -30,12 +30,15 @@ class UserController extends ActiveController
     public function actionLogin()
     {
         $model = new LoginForm();
-        $model->attributes = Yii::$app->getRequest()->post();
-        if ($model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->login();
             return Yii::$app->getUser()->getIdentity();
         }
-        return $model;
+        return [
+            'content' => $this->renderAjax('login', [
+                'model' => $model
+            ])
+        ];
     }
 
     public function actionRegister()

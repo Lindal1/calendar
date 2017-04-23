@@ -44,9 +44,15 @@ class SiteController extends Controller
     public function actionLogin()
     {
         $model = new LoginForm();
-        return $this->renderAjax('login', [
-            'model' => $model,
-        ]);
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        return [
+            'content' => $this->renderAjax('login', [
+                'model' => $model,
+            ])
+        ];
     }
 
     /**

@@ -10,9 +10,9 @@
 
         login: function () {
             $.ajax({
-                url: '/site/login',
+                url: '/user/login',
                 success: function (response) {
-                    $(window.router.contentSelector).html(response);
+                    $(window.router.contentSelector).html(response.content);
                 }
             });
         },
