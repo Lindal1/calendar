@@ -25,7 +25,7 @@
                 url: '/site/calendar',
                 success: function (response) {
                     $(window.router.contentSelector).html(response);
-                    $('#calendar').fullCalendar();
+                    window.calendar.renderCalendar();
                 }
             });
         }

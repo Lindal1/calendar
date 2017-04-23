@@ -202,7 +202,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      * @param string $username
      * @return User|null
      */
-    public function findByUsername(string $username)
+    public static function findByUsername(string $username)
     {
         return self::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }

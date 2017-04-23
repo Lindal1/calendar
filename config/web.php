@@ -42,7 +42,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'user']
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['user', 'event', 'invite']]
             ],
         ],
         'assetManager' => [

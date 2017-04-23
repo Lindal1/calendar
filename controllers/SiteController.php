@@ -2,11 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\forms\EventForm;
 use Yii;
-use yii\filters\AccessControl;
-use yii\helpers\Url;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
 use app\models\forms\LoginForm;
 use app\models\ContactForm;
 
@@ -65,6 +63,13 @@ class SiteController extends Controller
     public function actionCalendar()
     {
         return $this->renderAjax('calendar');
+    }
+
+    public function actionNewEventForm($date_start)
+    {
+        return $this->renderAjax('eventForm', [
+            'model' => new EventForm(['date_start' => $date_start])
+        ]);
     }
 
 }

@@ -9,59 +9,36 @@
     }
     window.SDK.user = {
         isLogged: function () {
-            console.log(this.getFromStorage());
-            return this.logged;
+            var data = this.getFromStorage();
+            return data !== null;
         },
-        logged: false,
         data: {},
         storage: sessionStorage,
         storageParam: 'userData',
 
         login: function (username, password) {
-            return (new Promise(function (resolve, reject) {
-                return $.ajax({
-                    url: '/user/login',
-                    data: {username: username, password: password},
-                    type: 'post',
-                    dataType: 'json',
-                    success: function (response) {
-                        window.SDK.user.data = response;
-                        window.SDK.user.saveInStorage(response);
-                        window.SDK.user.logged = true;
-                        resolve();
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        reject(error);
-                    }
+            return window.SDK.api.post('/user/login', {username: username, password: password})
+                .then(function (response) {
+                    window.SDK.user.data = response;
+                    window.SDK.user.saveInStorage(response);
+                    window.SDK.api.token = response['access_token'];
+                    return;
                 });
-            }));
         },
 
-        register: function (username, password, code) {
-            return (new Promise(function (resolve, reject) {
-                return $.ajax({
-                    url: '/user/register',
-                    data: {username: username, password: password, code: code},
-                    type: 'post',
-                    dataType: 'json',
-                    success: function (response) {
-                        window.SDK.user.data = response;
-                        window.SDK.user.saveInStorage(response);
-                        window.SDK.user.logged = true;
-                        resolve();
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        reject();
-                    }
+        register: function (username, password, inviteCode) {
+            return window.SDK.api.post('/user/login', {username: username, password: password, inviteCode: inviteCode})
+                .then(function (response) {
+                    window.SDK.user.data = response;
+                    window.SDK.user.saveInStorage(response);
+                    window.SDK.api.token = response['access_token'];
+                    return;
                 });
-            }));
         },
 
         logout: function () {
-            this.logged = false;
-            this.data = {};
+            this.saveInStorage(null);
+            window.SDK.api.token = null;
         },
 
         saveInStorage: function (data) {

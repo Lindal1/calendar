@@ -21,10 +21,13 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/sdk/api.js',
         'js/sdk/user.js',
         'js/sdk/event.js',
         'js/sdk/invite.js',
         'js/main.js',
+        'js/calendar.js',
+        'js/popup.js',
         'js/router.js'
     ];
     public $depends = [

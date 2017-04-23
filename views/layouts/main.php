@@ -71,6 +71,19 @@ AppAsset::register($this);
     </div>
 </footer>
 
+<?php
+\yii\jui\Dialog::begin([
+    'id' => 'popup',
+    'clientOptions' => [
+        'autoOpen' => false,
+        'modal' => true,
+        'resizable' => false,
+        'draggable' => false
+    ]
+]);
+echo "<div id='popup-content'></div>";
+\yii\jui\Dialog::end();
+?>
 
 <?php $this->endBody() ?>
 </body>
