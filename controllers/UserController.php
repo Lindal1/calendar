@@ -9,11 +9,10 @@
 namespace app\controllers;
 
 use app\models\forms\LoginForm;
-use yii\filters\auth\HttpBearerAuth;
-use yii\rest\ActiveController;
 use Yii;
+use yii\web\Controller;
 
-class UserController extends ActiveController
+class UserController extends Controller
 {
     public $modelClass = 'app\models\User';
 
@@ -29,6 +28,7 @@ class UserController extends ActiveController
 
     public function actionLogin()
     {
+        Yii::$app->getResponse()->format = \yii\web\Response::FORMAT_JSON;
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->login();

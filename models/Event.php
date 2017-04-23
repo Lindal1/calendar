@@ -20,6 +20,11 @@ use Yii;
  */
 class Event extends \yii\db\ActiveRecord
 {
+
+    const STATUS_NEW = 1;
+    const STATUS_IN_PROCESS = 2;
+    const STATUS_FINISHED = 3;
+
     /**
      * @inheritdoc
      */
@@ -34,6 +39,7 @@ class Event extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['status', 'default', 'value' => self::STATUS_NEW],
             [['user_id', 'name', 'date_start', 'status'], 'required'],
             [['user_id', 'status'], 'integer'],
             [['date_start', 'date_end'], 'safe'],

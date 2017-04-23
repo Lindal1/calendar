@@ -9,10 +9,12 @@
 namespace app\controllers;
 
 
+use app\models\forms\EventForm;
+use Yii;
 use yii\filters\auth\HttpBearerAuth;
-use yii\rest\ActiveController;
+use yii\web\Controller;
 
-class EventController extends ActiveController
+class EventController extends Controller
 {
     public $modelClass = 'app\models\Event';
 
@@ -23,5 +25,21 @@ class EventController extends ActiveController
             'class' => HttpBearerAuth::className()
         ];
         return $behaviors;
+    }
+
+
+    public function actionCreate($date_start)
+    {
+        Yii::$app->getResponse()->format = \yii\web\Response::FORMAT_JSON;
+        $model = new EventForm([
+            'date_start' => $date_start,
+            'user_id' => Yii::$app->getUser()->getId()
+        ]);
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->save()) {
+            return $model;
+        }
+        return [
+            'content' => $this->renderAjax('create', ['model' => $model])
+        ];
     }
 }
