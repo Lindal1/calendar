@@ -1,4 +1,4 @@
-For install install the application you must first install docker and docker-compose.
+For install the application you must first install docker and docker-compose.
 After you need to execute commands:
 ~~~
 git clone https://github.com/Lindal1/calendar.git
