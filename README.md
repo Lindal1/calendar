@@ -1,5 +1,5 @@
-In order to install the application you must first install docker and docker-compose.
-After execute next command:
+For install install the application you must first install docker and docker-compose.
+After you need to execute commands:
 ~~~
 git clone https://github.com/Lindal1/calendar.git
 cd calendar/docker
@@ -9,8 +9,8 @@ docker exec -ti docker_web_1 php yii migrate
 ~~~
 
 After follow to calendar.dev
-We have one admin account: 
+We have one admin account:
 ~~~
-login: admin@calendat.dev
+login: admin@calendar.dev
 password: admin
 ~~~
